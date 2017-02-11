@@ -1,4 +1,3 @@
-# chatbot
 Instructions:
 
 download heroku belt from https://cli-assets.heroku.com/branches/stable/heroku-windows-amd64.exe
