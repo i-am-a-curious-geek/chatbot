@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
-    if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') { // sync with the chatbot API you're using i.e. Facebook in this case
+    if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
@@ -49,34 +49,27 @@ app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
 
-var counter = 0;
-// API End Point - added by Stefan
+var token = "EAAFXsswM2qABACcAsNd5CdzBc2wMHKVb9PaIbrbIU6YLejLrVLIBZANlKsIUiEhasoZCQZCDNtCX9BxbGGjmzGYvP1ztSBsyVqMphepQGEddvynH6GcAwsw36OYDSkx23stZBe9MNvq7itHoVITcRUdssiRn6hZAGkhYZBaGCvYgZDZD";
+
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
         if (event.message && event.message.text) {
-            //text = event.message.text 
-			if(counter == 0) {
-				sendTextMessage(sender, "Greetings my friend! Welcome to SGTransporation page.")
-				counter++;
-			}
+            text = event.message.text
+			//sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			sendGenericMessage(sender)
-			continue                        
+			continue
         }
-        if (event.postback) {
-            text = event.postback	
-            sendTextMessage(sender, text["payload"], token)			
+		if (event.postback) {
+            text = event.postback
+            sendTextMessage(sender, text["payload"], token)
             continue
         }
     }
     res.sendStatus(200)
 })
-
-var token = "EAAFXsswM2qABACcAsNd5CdzBc2wMHKVb9PaIbrbIU6YLejLrVLIBZANlKsIUiEhasoZCQZCDNtCX9BxbGGjmzGYvP1ztSBsyVqMphepQGEddvynH6GcAwsw36OYDSkx23stZBe9MNvq7itHoVITcRUdssiRn6hZAGkhYZBaGCvYgZDZD";
-
-// function to echo back messages - added by Stefan
 
 function sendTextMessage(sender, text) {
     messageData = {
@@ -99,8 +92,6 @@ function sendTextMessage(sender, text) {
     })
 }
 
-
-// Send an test message back as two cards.
 
 function sendGenericMessage(sender) {
     messageData = {
