@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
-    if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
+    if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') { 
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
@@ -49,7 +49,7 @@ app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
 
-var token = "EAAFXsswM2qABACcAsNd5CdzBc2wMHKVb9PaIbrbIU6YLejLrVLIBZANlKsIUiEhasoZCQZCDNtCX9BxbGGjmzGYvP1ztSBsyVqMphepQGEddvynH6GcAwsw36OYDSkx23stZBe9MNvq7itHoVITcRUdssiRn6hZAGkhYZBaGCvYgZDZD";
+var token = "EAAYS0WTT0XYBAF05RdEIjiD6wLL0D7cBpfsxNNEjOAVLos1H8q2QSXLhLNp8omaD1wrYIkUqDWwP13FFYkNM0Yc1tCtATK1r9rlfDBEUBZCLDnfgLftSDb0PtM07x7GfnCijZBCD994xx1xdsosC4JTGmZAHlgZBcjBLiuw2jAZDZD";
 
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
@@ -57,14 +57,13 @@ app.post('/webhook/', function (req, res) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
         if (event.message && event.message.text) {
-            text = event.message.text
-			//sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            text = event.message.text            
 			sendGenericMessage(sender)
-			continue
+			continue                        
         }
-		if (event.postback) {
-            text = event.postback
-            sendTextMessage(sender, text["payload"], token)
+        if (event.postback) {
+            text = event.postback["payload"]
+            sendTextMessage(sender, text, token)
             continue
         }
     }
